@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elite Games — Jogos de cartas online</title>
+<meta name="description" content="Elite Games é a desenvolvedora do Truconet e de jogos de cartas online para web e celular.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070d1f; --bg2:#0c1530; --card:#111c3d; --line:#1e2b55;
+    --blue:#2f6bff; --blue2:#5b8cff; --gold:#f5c04a;
+    --text:#eef2ff; --muted:#9aa6c9; --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* Header */
+  header{position:sticky;top:0;z-index:10;background:rgba(7,13,31,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem;letter-spacing:-.02em}
+  .logo-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--blue2));display:grid;place-items:center;font-size:1.1rem}
+  .logo span{color:var(--gold)}
+  nav ul{display:flex;gap:28px;list-style:none;font-size:.95rem;color:var(--muted)}
+  nav a:hover{color:var(--text)}
+  .menu-btn{display:none;background:none;border:0;color:var(--text);font-size:1.5rem;cursor:pointer}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden;padding:110px 0 100px}
+  .hero::before{content:"";position:absolute;inset:-40% -10% auto auto;width:700px;height:700px;background:radial-gradient(circle,rgba(47,107,255,.35),transparent 65%);pointer-events:none}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;position:relative}
+  .tag{display:inline-block;padding:6px 14px;border:1px solid var(--line);border-radius:999px;font-size:.82rem;color:var(--blue2);background:rgba(47,107,255,.08);margin-bottom:22px}
+  h1{font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.08;letter-spacing:-.035em;font-weight:800;margin-bottom:20px}
+  h1 em{font-style:normal;background:linear-gradient(90deg,var(--blue2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{font-size:1.12rem;color:var(--muted);max-width:540px;margin-bottom:32px}
+  .btns{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{padding:14px 26px;border-radius:12px;font-weight:600;font-size:.98rem;transition:.2s}
+  .btn-primary{background:var(--blue);color:#fff}
+  .btn-primary:hover{background:var(--blue2)}
+  .btn-ghost{border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--blue2)}
+
+  .cards{position:relative;height:320px}
+  .pcard{position:absolute;width:160px;height:228px;border-radius:16px;background:#fff;color:#111;box-shadow:0 25px 50px rgba(0,0,0,.45);display:flex;flex-direction:column;justify-content:space-between;padding:14px;font-weight:800;font-size:1.5rem}
+  .pcard .big{font-size:4rem;text-align:center;line-height:1}
+  .pcard .bottom{transform:rotate(180deg)}
+  .red{color:#d33a3a}
+  .c1{left:8%;top:40px;transform:rotate(-14deg)}
+  .c2{left:30%;top:10px;transform:rotate(0deg);z-index:2}
+  .c3{left:52%;top:40px;transform:rotate(14deg)}
+
+  /* Sections */
+  section{padding:90px 0}
+  .alt{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .eyebrow{color:var(--gold);font-weight:600;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+  h2{font-size:clamp(1.8rem,3.5vw,2.5rem);letter-spacing:-.03em;line-height:1.15;margin-bottom:16px}
+  .sub{color:var(--muted);max-width:640px;font-size:1.05rem}
+  .head{margin-bottom:48px}
+
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .about-grid p{color:var(--muted);margin-bottom:16px}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+  .stat b{display:block;font-size:1.9rem;letter-spacing:-.03em;color:var(--blue2)}
+  .stat span{color:var(--muted);font-size:.92rem}
+
+  .games{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .game{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;transition:.25s}
+  .game:hover{transform:translateY(-4px);border-color:var(--blue)}
+  .game-icon{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;font-size:1.6rem;margin-bottom:18px;background:rgba(47,107,255,.15)}
+  .game h3{font-size:1.25rem;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .game p{color:var(--muted);font-size:.95rem}
+  .pill{font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:999px}
+  .live{background:rgba(52,199,120,.15);color:#4ade80}
+  .soon{background:rgba(245,192,74,.14);color:var(--gold)}
+  .platforms{margin-top:16px;font-size:.85rem;color:var(--muted)}
+
+  .values{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .value{padding:26px;border-radius:var(--radius);border:1px solid var(--line);background:linear-gradient(180deg,var(--card),transparent)}
+  .value .ic{font-size:1.6rem;margin-bottom:14px}
+  .value h4{font-size:1.05rem;margin-bottom:8px}
+  .value p{color:var(--muted);font-size:.92rem}
+
+  .contact{background:linear-gradient(135deg,#12245c,#0c1530);border:1px solid var(--line);border-radius:24px;padding:56px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+  .contact p{color:var(--muted)}
+  .contact-list{display:flex;flex-direction:column;gap:14px}
+  .contact-item{background:rgba(7,13,31,.5);border:1px solid var(--line);border-radius:14px;padding:16px 20px}
+  .contact-item small{display:block;color:var(--muted);font-size:.8rem}
+  .contact-item a,.contact-item strong{font-weight:600}
+  .contact-item a:hover{color:var(--blue2)}
+
+  footer{padding:44px 0 36px;border-top:1px solid var(--line);margin-top:90px;color:var(--muted);font-size:.9rem}
+  .foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .foot ul{display:flex;gap:22px;list-style:none}
+  .foot a:hover{color:var(--text)}
+  .legal{margin-top:22px;font-size:.8rem;line-height:1.7}
+  .age{display:inline-block;border:1px solid var(--muted);border-radius:6px;padding:0 6px;font-weight:700;margin-right:6px}
+
+  @media (max-width:900px){
+    .hero-grid,.about-grid,.contact{grid-template-columns:1fr}
+    .cards{height:260px;max-width:380px;margin:0 auto;width:100%}
+    .pcard{width:130px;height:186px}
+    .games{grid-template-columns:1fr}
+    .values{grid-template-columns:1fr 1fr}
+    .contact{padding:36px 26px}
+    nav ul{display:none;position:absolute;top:68px;left:0;right:0;flex-direction:column;gap:0;background:var(--bg2);border-bottom:1px solid var(--line)}
+    nav ul.open{display:flex}
+    nav li a{display:block;padding:16px 24px}
+    .menu-btn{display:block}
+  }
+  @media (max-width:520px){.values,.stats{grid-template-columns:1fr}.hero{padding:70px 0}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo"><div class="logo-mark">♠</div>Elite<span>Games</span></a>
+    <nav>
+      <button class="menu-btn" aria-label="Abrir menu" onclick="document.getElementById('menu').classList.toggle('open')">☰</button>
+      <ul id="menu">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#jogos">Jogos</a></li>
+        <li><a href="#compromissos">Compromissos</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="tag">Estúdio brasileiro de jogos de cartas</div>
+        <h1>Os clássicos de cartas do Brasil, <em>agora online.</em></h1>
+        <p class="lead">A Elite Games desenvolve jogos de cartas multiplayer para web e celular, com partidas justas, rápidas e seguras para quem gosta de jogar com os amigos ou desafiar jogadores de todo o país.</p>
+        <div class="btns">
+          <a href="#jogos" class="btn btn-primary">Conheça nossos jogos</a>
+          <a href="#contato" class="btn btn-ghost">Fale com a gente</a>
+        </div>
+      </div>
+      <div class="cards" aria-hidden="true">
+        <div class="pcard c1"><div>4</div><div class="big">♣</div><div class="bottom">4</div></div>
+        <div class="pcard c2 red"><div>7</div><div class="big">♥</div><div class="bottom">7</div></div>
+        <div class="pcard c3"><div>A</div><div class="big">♠</div><div class="bottom">A</div></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="sobre" class="alt">
+    <div class="wrap about-grid">
+      <div>
+        <div class="eyebrow">Quem somos</div>
+        <h2>Feito por quem cresceu jogando truco na mesa do bar.</h2>
+        <p>A Elite Games nasceu para levar a experiência das rodas de cartas brasileiras para o mundo digital, mantendo o que elas têm de melhor: a estratégia, a conversa e a disputa saudável.</p>
+        <p>Criamos nossos jogos com tecnologia própria, servidores preparados para milhares de jogadores ao mesmo tempo e uma equipe dedicada a manter cada partida equilibrada e livre de trapaças.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>Web + Mobile</b><span>Jogue no navegador ou no celular</span></div>
+        <div class="stat"><b>Multiplayer</b><span>Partidas em tempo real</span></div>
+        <div class="stat"><b>100% Brasil</b><span>Regras e cultura brasileiras</span></div>
+        <div class="stat"><b>Suporte</b><span>Atendimento em português</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="jogos">
+    <div class="wrap">
+      <div class="head">
+        <div class="eyebrow">Nossos jogos</div>
+        <h2>Um portfólio que não para de crescer</h2>
+        <p class="sub">Começamos pelo truco e estamos ampliando para os jogos de cartas mais jogados do Brasil.</p>
+      </div>
+      <div class="games">
+        <div class="game">
+          <div class="game-icon">♠</div>
+          <h3>Truconet <span class="pill live">Disponível</span></h3>
+          <p>Truco online com mesas grátis, salas e torneios. Jogue em dupla, chame o parceiro e mostre quem manda na mesa.</p>
+          <div class="platforms">Web · Android (em breve)</div>
+        </div>
+        <div class="game">
+          <div class="game-icon">♦</div>
+          <h3>Cacheta <span class="pill soon">Em breve</span></h3>
+          <p>O clássico das rodas de família, com partidas rápidas e regras tradicionais.</p>
+          <div class="platforms">Web · Android</div>
+        </div>
+        <div class="game">
+          <div class="game-icon">♥</div>
+          <h3>Mais jogos <span class="pill soon">Em breve</span></h3>
+          <p>Novos jogos de cartas em desenvolvimento para completar a sua mesa.</p>
+          <div class="platforms">Web · Android</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="compromissos" class="alt">
+    <div class="wrap">
+      <div class="head">
+        <div class="eyebrow">Nossos compromissos</div>
+        <h2>Jogo limpo, do embaralhar ao último ponto</h2>
+      </div>
+      <div class="values">
+        <div class="value"><div class="ic">🧠</div><h4>Habilidade</h4><p>Nossos jogos premiam estratégia, leitura de jogo e trabalho em dupla.</p></div>
+        <div class="value"><div class="ic">⚖️</div><h4>Partidas justas</h4><p>Embaralhamento aleatório e sistemas de combate a trapaças e contas falsas.</p></div>
+        <div class="value"><div class="ic">🔒</div><h4>Segurança</h4><p>Proteção dos dados dos jogadores e das transações em todas as etapas.</p></div>
+        <div class="value"><div class="ic">🔞</div><h4>Jogo responsável</h4><p>Modos com valores são exclusivos para maiores de 18 anos.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <div class="eyebrow">Contato</div>
+          <h2>Fale com a Elite Games</h2>
+          <p>Dúvidas, suporte, parcerias ou imprensa: responderemos o mais rápido possível.</p>
+        </div>
+        <div class="contact-list">
+          <div class="contact-item"><small>E-mail de suporte</small><a href="mailto:contato@elitegames.com.br">contato@elitegames.com.br</a></div>
+          <div class="contact-item"><small>Parcerias e imprensa</small><a href="mailto:parcerias@elitegames.com.br">parcerias@elitegames.com.br</a></div>
+          <div class="contact-item"><small>Jogue agora</small><a href="https://truconet.com.br" target="_blank" rel="noopener">truconet.com.br</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="logo"><div class="logo-mark">♠</div>Elite<span>Games</span></div>
+      <ul>
+        <li><a href="/privacidade/">Política de Privacidade</a></li>
+        <li><a href="/termos/">Termos de Uso</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </div>
+    <div class="legal">
+      <span class="age">18+</span>Modos com valores são proibidos para menores de 18 anos.<br>
+      © <span id="ano">2026</span> Elite Games — [RAZÃO SOCIAL] — CNPJ [00.000.000/0000-00]. Todos os direitos reservados.
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('ano').textContent = new Date().getFullYear();
+  document.querySelectorAll('#menu a').forEach(a => a.addEventListener('click', () => document.getElementById('menu').classList.remove('open')));
+</script>
+</body>
+</html>
